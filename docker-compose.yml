@@ -1,0 +1,6 @@
+services:
+    server:
+        image: local/api-server
+        build:
+            context: .
+            dockerfile: Dockerfile
