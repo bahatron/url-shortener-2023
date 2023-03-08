@@ -1,0 +1,38 @@
+on:
+    push:
+        branches:
+            - main
+            - production
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    # Build and Test Docker image
+    # TODO: add docker logs in case container fails to load or unexpected errors
+    build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Build and Test
+              uses: actions/checkout@v2
+            - run: GITROOT="${GITHUB_WORKSPACE}" ${GITHUB_WORKSPACE}/scripts/ci-build.sh
+
+            - name: Collect test results
+              uses: actions/upload-artifact@v2
+              if: failure()
+              with:
+                  name: jest-stare
+                  path: jest-stare/
+
+            - run: mkdir ./docker-cache
+              if: failure()
+
+            - run: docker logs api-server > docker-cache/test-logs.txt
+              if: failure()
+
+            - name: Gather Application logs if Failure
+              uses: actions/upload-artifact@v2
+              if: failure()
+              with:
+                  name: docker-cache
+                  path: docker-cache/

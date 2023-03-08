@@ -2,6 +2,8 @@ import express from "express";
 import { PingQuery } from "../graphql/ping/ping.query";
 import { PingResolver } from "../graphql/ping/ping.resolver";
 import { $logger } from "../services/logger";
+import "../utils/process-starters";
+
 const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
 
@@ -36,5 +38,5 @@ app.use(
 );
 
 app.listen(4000, () => {
-    $logger.info("Running a GraphQL API server at http://localhost:4000");
+    $logger.info(`Running a GraphQL API server at port 4000`);
 });

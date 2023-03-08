@@ -1,7 +1,7 @@
 docker_compose(["./docker-compose.tilt.yml"])
 
 docker_build(
-    "local/api-server",
+    "local/server",
     ".",
     dockerfile="Dockerfile",
     target="src",

@@ -34,7 +34,7 @@ services:
             - 6379:6379
 
     api:
-        image: local/api-server
+        image: local/server
         container_name: api-server
         command: sh -c "npm run knex:migrate && npm run api:dev"
         ports:
@@ -50,7 +50,7 @@ services:
             - ./jest-stare:/app/jest-stare
 
     graphql-server:
-        image: local/api-server
+        image: local/server
         container_name: graphql-api
         command: sh -c "npm run graphql:dev"
         ports:

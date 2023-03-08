@@ -1,22 +1,8 @@
-import { $logger, REQUEST_ID_KEY } from "../services/logger";
-import { AsyncContext } from "@bahatron/utils/lib/context";
+import { $logger } from "../services/logger";
 import { AppServer } from "../server/server";
 import { $env } from "../services/env";
 import { PingRoute } from "../controllers/ping/ping.route";
-
-["uncaughtException", "unhandledRejection"].map((event) => {
-    process.on(event, async (error) => {
-        $logger.error(
-            {
-                error,
-                request_id: AsyncContext.get(REQUEST_ID_KEY),
-            },
-            event,
-        );
-
-        process.exit(-1);
-    });
-});
+import "../utils/process-starters";
 
 AppServer({ routes: [PingRoute] }).then((app) => {
     app.listen($env.PORT, () => {
