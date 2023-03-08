@@ -12,7 +12,7 @@ export const $env = {
     // server config
     DEV_MODE: process.env.NODE_ENV !== "production",
     PORT: process.env.PORT || 4000,
-    TEST_URL: process.env.TEST_URL || `http://localhost:4000`,
+    TEST_URL: process.env.TEST_URL,
     ENABLE_DEBUG: getenv("ENABLE_DEBUG", "1") === "1",
     API_URL: getenv("API_URL", ""),
     BULL_MONITOR_ENABLED: getenv("BULL_MONITOR_ENABLED", "1"),

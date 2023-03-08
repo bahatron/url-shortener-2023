@@ -1,5 +1,6 @@
 x-server-config: &server-config
     PORT: 3000
+    TEST_URL: http://localhost:3000
     REDIS_URL: redis://redis:6379
     DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
     SUPER_ADMIN_EMAIL: dev@admin.com

@@ -5,12 +5,12 @@ if [ -z $GITROOT ]; then
 fi
 
 # build images
-docker-compose build --parallel || exit 1
+docker compose build --parallel || exit 1
 
 # start test environment
-docker-compose -f "${GITROOT}/docker-compose.test.yml" down
-docker-compose -f "${GITROOT}/docker-compose.test.yml" up -d database
-docker-compose -f "${GITROOT}/docker-compose.test.yml" up -d
+docker compose -f "${GITROOT}/docker-compose.test.yml" down
+docker compose -f "${GITROOT}/docker-compose.test.yml" up -d database
+docker compose -f "${GITROOT}/docker-compose.test.yml" up -d
 
 # wait for server to be ready
 attempts=1
