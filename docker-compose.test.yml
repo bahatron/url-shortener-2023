@@ -1,0 +1,43 @@
+x-server-config: &server-config
+    PORT: 3000
+    REDIS_URL: redis://redis:6379
+    DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
+    SUPER_ADMIN_EMAIL: dev@admin.com
+    SUPER_ADMIN_PASSWORD: secret
+    JWT_SECRET: change_this_often
+    ENABLE_SWAGGER: 1
+    ENABLE_DEBUG: 1
+
+services:
+    database:
+        image: postgres:14
+        container_name: database
+        command: -c 'max_connections=500'
+        ports:
+            - 5432:5432
+        volumes:
+            - ./postgres/dumps:/dumps
+            # - ./postgres/dumps/seeds.sql:/docker-entrypoint-initdb.d/seeds.sql
+        working_dir: /scripts
+        environment:
+            POSTGRES_DB: local
+            POSTGRES_PASSWORD: secret
+        healthcheck:
+            test: pg_isready -d local -U postgres -h 127.0.0.1
+            interval: 1s
+
+    redis:
+        image: redis
+        container_name: redis
+
+    api:
+        image: local/server
+        container_name: api-server
+        command: sh -c "npm run knex:migrate && npm run api:prod"
+        depends_on:
+            - database
+            - redis
+        environment:
+            <<: *server-config
+        volumes:
+            - ./jest-stare:/app/jest-stare
