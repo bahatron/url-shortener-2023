@@ -7,7 +7,7 @@ export const PingRoute: Route = {
     method: "get",
     route: "/ping",
     docs: {
-        tags: ["APM"],
+        tags: ["A.P.M."],
         description: "ping",
         responses: {
             200: {
@@ -21,16 +21,6 @@ export const PingRoute: Route = {
     },
     handler: [
         asyncRoute(async (req, res) => {
-            $logger.info(
-                {
-                    headers: req.headers,
-                    params: req.params,
-                    query: req.query,
-                    body: req.body,
-                },
-                "got ping request",
-            );
-
             return res.json("pong");
         }),
     ],

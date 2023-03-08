@@ -13,7 +13,7 @@
 npm run setup
 
 # start dev environment
-npm run docker:clean
+npm run tilt:clean
 ```
 
 ## Working with the Database

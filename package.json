@@ -11,9 +11,11 @@
         "build:clean": "rm -rf dist && npm run build",
         "knex:migration": "LOCAL_ENV=1 knex migrate:make --client pg ${1}",
         "knex:migrate": "knex migrate:latest",
-        "ts:dev": "npm run build -- --watch & pm2-runtime start process.config.js --only ts-api",
         "api:dev": "npm run build -- --watch & pm2-runtime start process.config.js --only api",
+        "api:ts": "pm2-runtime start process.config.js --only ts-api",
+        "api:prod": "pm2-runtime start process.config.js --only api",
         "graphql:dev": "npm run build -- --watch & pm2-runtime start process.config.js --only graphql-api",
+        "graphql:prod": "pm2-runtime start process.config.js --only graphql-api",
         "tilt:clean": "tilt down && tilt up"
     },
     "dependencies": {
