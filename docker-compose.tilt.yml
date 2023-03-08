@@ -5,8 +5,8 @@ x-server-config: &server-config
     SUPER_ADMIN_EMAIL: dev@admin.com
     SUPER_ADMIN_PASSWORD: secret
     JWT_SECRET: change_this_often
-    SWAGGER_ENABLED: 1
-    DEBUG_ENABLED: 1
+    ENABLE_SWAGGER: 1
+    ENABLE_DEBUG: 1
 
 services:
     database:

@@ -13,10 +13,10 @@ export const $env = {
     DEV_MODE: process.env.NODE_ENV !== "production",
     PORT: process.env.PORT || 4000,
     TEST_URL: process.env.TEST_URL || `http://localhost:4000`,
-    DEBUG_ENABLED: getenv("DEBUG_ENABLED", "1") === "1",
+    ENABLE_DEBUG: getenv("ENABLE_DEBUG", "1") === "1",
     API_URL: getenv("API_URL", ""),
     BULL_MONITOR_ENABLED: getenv("BULL_MONITOR_ENABLED", "1"),
-    SWAGGER_ENABLED: Boolean(getenv("SWAGGER_ENABLED", "")),
+    ENABLE_SWAGGER: Boolean(getenv("ENABLE_SWAGGER", "")),
     SWAGGER_TARGET: getenv("SWAGGER_TARGET", "/"),
 
     // redis
