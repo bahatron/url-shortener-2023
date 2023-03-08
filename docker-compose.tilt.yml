@@ -1,3 +1,13 @@
+x-server-config: &server-config
+    PORT: 3000
+    REDIS_URL: redis://redis:6379
+    DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
+    SUPER_ADMIN_EMAIL: dev@admin.com
+    SUPER_ADMIN_PASSWORD: secret
+    JWT_SECRET: change_this_often
+    SWAGGER_ENABLED: 1
+    DEBUG_ENABLED: 1
+
 services:
     database:
         image: postgres:14
@@ -26,22 +36,26 @@ services:
     api:
         image: local/api-server
         container_name: api-server
-        command: sh -c "npm run knex:migrate && npm run dev"
+        command: sh -c "npm run knex:migrate && npm run api:dev"
         ports:
             - 3000:3000
         depends_on:
             - database
             - redis
         environment:
-            PORT: 3000
-            REDIS_URL: redis://redis:6379
-            DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
-            SUPER_ADMIN_EMAIL: dev@admin.com
-            SUPER_ADMIN_PASSWORD: secret
-            JWT_SECRET: change_this_often
-            SWAGGER_ENABLED: 1
-            DEBUG_ENABLED: 1
+            <<: *server-config
         volumes:
             # All this volumes are to get files generated from within the docker container
             - ./knex_migrations:/app/knex_migrations
             - ./jest-stare:/app/jest-stare
+
+    graphql-server:
+        image: local/api-server
+        container_name: graphql-api
+        command: sh -c "npm run graphql:dev"
+        ports:
+            - 4000:4000
+        depends_on:
+            - api
+        environment:
+            <<: *server-config

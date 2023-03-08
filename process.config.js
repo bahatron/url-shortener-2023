@@ -22,5 +22,13 @@ module.exports = {
             instances: "3",
             ...LOG_OPTIONS,
         },
+        {
+            name: "graphql-api",
+            script: "dist/bin/graphql-server.js",
+            watch: process.env.NODE_ENV !== "production" && ["dist"],
+            exec_mode: "cluster",
+            instances: "3",
+            ...LOG_OPTIONS,
+        },
     ],
 };
