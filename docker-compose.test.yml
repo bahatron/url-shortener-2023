@@ -1,13 +1,12 @@
 x-server-config: &server-config
     PORT: 3000
     TEST_URL: http://localhost:3000
-    REDIS_URL: redis://redis:6379
-    DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
+    DATABASE_URL: postgresql://postgres:secret@database:5432/local
     SUPER_ADMIN_EMAIL: dev@admin.com
     SUPER_ADMIN_PASSWORD: secret
     JWT_SECRET: change_this_often
-    ENABLE_SWAGGER: 1
-    ENABLE_DEBUG: 1
+    ENABLE_SWAGGER: 0
+    ENABLE_DEBUG: 0
 
 services:
     database:
@@ -27,17 +26,12 @@ services:
             test: pg_isready -d local -U postgres -h 127.0.0.1
             interval: 1s
 
-    redis:
-        image: redis
-        container_name: redis
-
     server:
         image: local/server
         container_name: api-server
         command: sh -c "npm run knex:migrate && npm run api:prod"
         depends_on:
             - database
-            - redis
         environment:
             <<: *server-config
         volumes:

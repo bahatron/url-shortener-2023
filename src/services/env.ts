@@ -18,8 +18,4 @@ export const $env = {
     BULL_MONITOR_ENABLED: getenv("BULL_MONITOR_ENABLED", "1"),
     ENABLE_SWAGGER: Boolean(getenv("ENABLE_SWAGGER", "")),
     SWAGGER_TARGET: getenv("SWAGGER_TARGET", "/"),
-
-    // redis
-    REDIS_URL: getenv("REDIS_URL", ""),
-    REDIS_TLS_ENABLED: process.env.REDIS_TLS_ENABLED === "1",
 };

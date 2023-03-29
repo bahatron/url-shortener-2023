@@ -2,7 +2,7 @@ import { AsyncContext } from "@bahatron/utils/lib/context";
 import { ErrorRequestHandler } from "express";
 import { $logger, REQUEST_ID_KEY } from "../services/logger";
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const ERROR_HANDLER_MIDDLEWARE: ErrorRequestHandler = (err, req, res, next) => {
     let code = validHttpCode(err.code);
     let request_id = AsyncContext.get(REQUEST_ID_KEY);
 

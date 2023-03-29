@@ -7,7 +7,7 @@ export async function AppServer({
 }: {
     middleware: (RequestHandler | [string, RequestHandler])[];
     router: Router | Router[];
-    errorHandler: ErrorRequestHandler;
+    errorHandler: ErrorRequestHandler | ErrorRequestHandler[];
 }) {
     const app = express();
 

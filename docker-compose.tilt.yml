@@ -1,7 +1,6 @@
 x-server-config: &server-config
     PORT: 3000
     TEST_URL: http://localhost:3000
-    REDIS_URL: redis://redis:6379
     DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:secret@database:5432/local}
     SUPER_ADMIN_EMAIL: dev@admin.com
     SUPER_ADMIN_PASSWORD: secret
@@ -28,12 +27,6 @@ services:
             test: pg_isready -d local -U postgres -h 127.0.0.1
             interval: 1s
 
-    redis:
-        image: redis
-        container_name: redis
-        ports:
-            - 6379:6379
-
     server:
         image: local/server
         container_name: api-server
@@ -42,10 +35,9 @@ services:
             - 3000:3000
         depends_on:
             - database
-            - redis
         environment:
             <<: *server-config
         volumes:
             # All this volumes are to get files generated from within the docker container
-            - ./knex_migrations:/app/knex_migrations
+            - ./knex-migrations:/app/knex-migrations
             - ./jest-stare:/app/jest-stare

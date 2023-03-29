@@ -2,12 +2,12 @@ import "../utils/process-starters";
 import { $logger } from "../services/logger";
 import { AppServer } from "../server/server";
 import { $env } from "../services/env";
-import { errorHandler } from "../middleware/error-handler";
+import { ERROR_HANDLER_MIDDLEWARE } from "../middleware/error-handler";
 import { AppRouter } from "../server/router";
 import { PingRoute } from "../routes/ping/ping.route";
 import { CreateShortenedUrlRoute } from "../routes/create-shortened-url/create-shortened-url.route";
 import { RedirectToOriginalRoute } from "../routes/redirect-to-original/redirect-to-original.route";
-import { REQUEST_LOGGER_MIDDLEWARE } from "../middleware/request-logger";
+import { REQUEST_LOGGER_MIDDLEWARE } from "../middleware/log-request";
 import { REQUEST_ID_MIDDLEWARE } from "../middleware/request-id";
 
 AppServer({
@@ -15,7 +15,7 @@ AppServer({
     router: AppRouter({
         routes: [PingRoute, CreateShortenedUrlRoute, RedirectToOriginalRoute],
     }),
-    errorHandler: errorHandler,
+    errorHandler: ERROR_HANDLER_MIDDLEWARE,
 }).then((app) => {
     app.listen($env.PORT, () => {
         $logger.debug(`debug mode enabled`);
