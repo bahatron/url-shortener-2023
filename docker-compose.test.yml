@@ -31,7 +31,7 @@ services:
         image: redis
         container_name: redis
 
-    api:
+    server:
         image: local/server
         container_name: api-server
         command: sh -c "npm run knex:migrate && npm run api:prod"

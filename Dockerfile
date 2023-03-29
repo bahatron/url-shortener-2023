@@ -7,7 +7,6 @@ RUN pm2 install typescript
 WORKDIR /app
 COPY package*.json ./
 COPY .husky .
-COPY ./yarn.lock .
-RUN yarn install
+RUN npm ci
 COPY . .
-RUN yarn run build:clean
+RUN npm run build:clean

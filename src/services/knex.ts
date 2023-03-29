@@ -1,3 +1,4 @@
+import { parse } from "@bahatron/utils/lib/helpers";
 import knex, { Knex } from "knex";
 import { resolve } from "path";
 import { types } from "pg";
@@ -16,6 +17,15 @@ types.setTypeParser(types.builtins.FLOAT8, (value: string) => {
 types.setTypeParser(types.builtins.NUMERIC, (value: string) => {
     return parseFloat(value);
 });
+types.setTypeParser(types.builtins.JSON, (value: string) => {
+    return parse(value);
+});
+types.setTypeParser(types.builtins.JSONB, (value: string) => {
+    return parse(value);
+});
+types.setTypeParser(types.builtins.TIMESTAMPTZ, (value: string) => {
+    return new Date(value);
+});
 
 export const CONFIG: Knex.Config = {
     client: "pg",
@@ -23,7 +33,7 @@ export const CONFIG: Knex.Config = {
     migrations: {
         tableName: "knex_migrations",
         // this expects application started from package.json root dir
-        directory: resolve(process.cwd(), "./knex_migrations"),
+        directory: resolve(process.cwd(), "./knex-migrations"),
         extension: "ts",
     },
 };

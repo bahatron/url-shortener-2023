@@ -5,7 +5,7 @@
     "scripts": {
         "setup": "npm install && npm run build:clean",
         "postinstall": "husky install",
-        "test": "ENABLE_DEBUG=0 jest --forceExit",
+        "test": "ENABLE_DEBUG=1 jest --forceExit",
         "test:ci": "ENABLE_DEBUG=0 npm run test -- --reporters=default --reporters=jest-stare --logHeapUsage --maxWorkers=50%",
         "build": "tsc -p tsconfig.build.json",
         "build:clean": "rm -rf dist && npm run build",

@@ -1,9 +1,9 @@
 import { $logger } from "../services/logger";
 
 beforeAll(async () => {
-    $logger.info(`global before all`);
+    $logger.debug(`global before all`);
 });
 
 afterAll(async () => {
-    $logger.info(`global after all`);
+    $logger.debug(`global after all`);
 });

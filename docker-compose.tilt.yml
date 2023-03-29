@@ -34,7 +34,7 @@ services:
         ports:
             - 6379:6379
 
-    api:
+    server:
         image: local/server
         container_name: api-server
         command: sh -c "npm run knex:migrate && npm run api:dev"
@@ -49,14 +49,3 @@ services:
             # All this volumes are to get files generated from within the docker container
             - ./knex_migrations:/app/knex_migrations
             - ./jest-stare:/app/jest-stare
-
-    graphql-server:
-        image: local/server
-        container_name: graphql-api
-        command: sh -c "npm run graphql:dev"
-        ports:
-            - 4000:4000
-        depends_on:
-            - api
-        environment:
-            <<: *server-config

@@ -8,7 +8,7 @@ export interface Route {
     docs?: {
         tags?: string[];
         description?: string;
-        security?: Record<"SessionToken", []>[];
+        security?: Record<"Session", []>[];
         parameters?: {
             in: "path" | "query" | "header";
             name: string;
@@ -19,20 +19,12 @@ export interface Route {
         }[];
         requestBody?: {
             required?: boolean;
-            content: {
-                "application/json": {
-                    schema: JsonSchema;
-                };
-            };
+            schema: JsonSchema;
         };
         responses?: {
             [k: number]: {
                 description?: string;
-                content: {
-                    "application/json": {
-                        schema: JsonSchema;
-                    };
-                };
+                schema: JsonSchema;
             };
         };
         schemas?: {

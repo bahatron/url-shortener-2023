@@ -8,7 +8,7 @@ function calculateHrDurationInMs(startTime: [number, number]) {
     return `${hrDurationMs.toFixed(3)}ms`;
 }
 
-export const requestTimerMiddleware: RequestHandler = (req, res, next) => {
+export const REQUEST_LOGGER_MIDDLEWARE: RequestHandler = (req, res, next) => {
     let hrTime = process.hrtime();
 
     res.once("close", () => {

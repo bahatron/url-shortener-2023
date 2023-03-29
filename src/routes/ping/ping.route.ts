@@ -1,7 +1,6 @@
 import { asyncRoute } from "../../server/async-route";
-import { Route } from "../../models/route/route.interface";
-import { $logger } from "../../services/logger";
-import { PingResponseSchema } from "./ping.response.schema";
+import { Route } from "../../server/route.interface";
+import { PingResponseSchema } from "./ping-response.schema";
 
 export const PingRoute: Route = {
     method: "get",
@@ -11,11 +10,7 @@ export const PingRoute: Route = {
         description: "ping",
         responses: {
             200: {
-                content: {
-                    "application/json": {
-                        schema: PingResponseSchema,
-                    },
-                },
+                schema: PingResponseSchema,
             },
         },
     },

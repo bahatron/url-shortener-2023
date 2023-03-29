@@ -1,45 +1,56 @@
 import { JsonSchema } from "@bahatron/utils/lib/types";
-import { $env } from "../services/env";
-import { Route } from "../models/route/route.interface";
+import { Route } from "./route.interface";
 
-export const createSwaggerDocs = ({
-    routes,
-    info,
-}: {
-    routes: Route[];
+export interface SwaggerConfig {
     info?: {
         title?: string;
         description?: string;
         version?: string;
     };
+    securitySchemes?: Record<
+        string,
+        {
+            in: "header";
+            name: string;
+            type: "apiKey";
+        }
+    >;
+}
+
+export const createSwaggerDocs = ({
+    routes,
+    info = {
+        title: "Swagger Docs",
+        description: "A collection of exposed endpoints",
+        version: "0.1.0",
+    },
+    securitySchemes = {
+        Session: {
+            in: "header",
+            name: "Authorization",
+            type: "apiKey",
+        },
+    },
+}: SwaggerConfig & {
+    routes: Route[];
 }) => {
     return {
         openapi: "3.0.0",
+
         info,
 
         servers: [
             {
-                url: $env.SWAGGER_TARGET,
+                url: "/",
             },
         ],
 
         paths: toSwaggerPaths(routes),
 
         components: {
-            securitySchemes: {
-                SessionToken: {
-                    in: "header",
-                    name: "Authorization",
-                    type: "apiKey",
-                },
-            },
+            securitySchemes,
 
-            schemas: routes.reduce((partial, route) => {
-                return {
-                    ...partial,
-                    ...route.docs?.schemas,
-                };
-            }, {} as Record<string, JsonSchema>),
+            schemas: parseSchemas(routes),
         },
     };
 };
@@ -55,8 +66,44 @@ function toSwaggerPaths(routes: Route[]) {
             carry[path] = {} as any;
         }
 
-        carry[path][route.method] = route.docs;
+        carry[path][route.method] = parseSwaggerRoute(route.docs);
 
         return carry;
-    }, {} as Record<string, Record<Route["method"], Route["docs"]>>);
+    }, {} as Record<string, Record<Route["method"], any>>);
+}
+
+function parseSwaggerRoute(docs: Route["docs"]) {
+    return {
+        ...docs,
+        requestBody: docs?.requestBody && {
+            required: docs.requestBody.required,
+            content: {
+                "application/json": {
+                    schema: docs.requestBody.schema,
+                },
+            },
+        },
+        responses:
+            docs?.responses &&
+            Object.entries(docs?.responses).reduce((carry, [status, doc]) => {
+                carry[status as any] = {
+                    description: doc.description,
+                    content: {
+                        "application/json": {
+                            schema: doc.schema,
+                        },
+                    },
+                };
+                return carry;
+            }, {} as Record<number, any>),
+    };
+}
+
+function parseSchemas(routes: Route[]) {
+    return routes.reduce((partial, route) => {
+        return {
+            ...partial,
+            ...route.docs?.schemas,
+        };
+    }, {} as Record<string, JsonSchema>);
 }
